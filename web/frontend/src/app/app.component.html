@@ -11,43 +11,31 @@
 
 
 <!-- predict-form.component.html -->
-<form (ngSubmit)="onSubmit()" class="justify-content-center  col-6 align-content-center align-items-center"  #predictForm="ngForm">
-  <div class="form-group">
-    <label for="distance_from_home">Distance par rapport au domicile</label>
-    <input type="number" class="form-control" id="distance_from_home" name="distance_from_home" [(ngModel)]="predict.distance_from_home" required>
+<div class="center">
+  <form (ngSubmit)="onSubmit()"  #predictForm="ngForm">
+    <div >
+      <label for="distance_from_home">Vitesse du vent</label>
+      <input type="number" class="form-control" id="distance_from_home" name="distance_from_home" [(ngModel)]="data.vitesse_vent" required>
+    </div>
+    <div class="form-group">
+      <label for="distance_from_last_transaction">temperature ambiant </label>
+      <input type="number" class="form-control" id="distance_from_last_transaction" name="distance_from_last_transaction" [(ngModel)]="data.temperature_abiant" required>
+    </div>
+    <div class="form-group">
+      <label for="ratio_to_median_purchase_price">temperature cable</label>
+      <input type="number" class="form-control" id="ratio_to_median_purchase_price" name="ratio_to_median_purchase_price" [(ngModel)]="data.temparature_cable" required>
+    </div>
+    <div class="form-group">
+      <label for="repeat_retailer">intensité</label>
+      <input type="number" class="form-control" id="repeat_retailer" name="repeat_retailer" [(ngModel)]="data.intesite" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Valider</button>
+  </form>
+  
+  <div> 
+    <button>Consomation de L'api</button>
   </div>
-  <div class="form-group">
-    <label for="distance_from_last_transaction">Distance par rapport à la dernière transaction</label>
-    <input type="number" class="form-control" id="distance_from_last_transaction" name="distance_from_last_transaction" [(ngModel)]="predict.distance_from_last_transaction" required>
-  </div>
-  <div class="form-group">
-    <label for="ratio_to_median_purchase_price">Rapport au prix d'achat médian</label>
-    <input type="number" class="form-control" id="ratio_to_median_purchase_price" name="ratio_to_median_purchase_price" [(ngModel)]="predict.ratio_to_median_purchase_price" required>
-  </div>
-  <div class="form-group">
-    <label for="repeat_retailer">Détaillants réguliers</label>
-    <input type="number" class="form-control" id="repeat_retailer" name="repeat_retailer" [(ngModel)]="predict.repeat_retailer" required>
-  </div>
-  <div class="form-group">
-    <label for="used_chip">Puce utilisée</label>
-    <input type="number" class="form-control" id="used_chip" name="used_chip" [(ngModel)]="predict.used_chip" required>
-  </div>
-  <div class="form-group">
-    <label for="online_order">Commande en ligne</label>
-    <input type="number" class="form-control" id="online_order" name="online_order" [(ngModel)]="predict.online_order" required>
-  </div>
-  <button type="submit" class="btn btn-primary">Valider</button>
-</form>
-
-<div *ngIf="isFraud">
-  <p>C'est une fraude</p>
-<img src="assets/000-33xp4w6-65213fa865d61989282266.jpg" height="243" width="432">
 </div>
-<div *ngIf="!isFraud">
-  <p>Notre intélligence ne detecte pas de fraude</p>
-  <img src="assets/8303d89dc5f1147b318a639fed259edd.jpg"height="243" width="432">
 
-
-</div>
 </body>
 </html>
