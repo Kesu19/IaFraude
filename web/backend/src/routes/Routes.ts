@@ -16,7 +16,7 @@ export class Routes {
     });
 
     app.route('/fraudes').get((request: Request, response: Response, next: NextFunction) => {
-      this.FraudeController.getFraude(request, response, next);
+      this.FraudeController.getTemperature(request, response, next);
     });
   }
 }

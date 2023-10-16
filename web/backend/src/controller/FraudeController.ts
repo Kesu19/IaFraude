@@ -13,15 +13,8 @@ interface Predict {
 export class FraudeController {
   constructor() {}
 
-  async getFraude(request: Request, response: Response, next: NextFunction) {
-    const predict: Predict = {
-      wind_speed: 10.0, // Example wind_speed
-      intensity: 20.0, // Example intensity
-      ambient_temp: 25.0, // Example ambient_temp
-      cable_temp: 30.0, // Example cable_temp
-      time: 100, // Example time
-      delta: 10 // Example delta
-    };
+  async getTemperature(request: Request, response: Response, next: NextFunction) {
+    const predict: Predict = request.body
 
     try {
       const fastAPIResponse = await axios.post('http://127.0.0.1:8000/temperature/', predict);

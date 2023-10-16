@@ -1,41 +1,43 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Test</title>
-</head>
-<body>
+<!-- app.component.html -->
+<div class="container">
+  <h1>Formulaire de Prédiction</h1>
 
+  <!-- Formulaire de recherche -->
+  <div >
+    <form (ngSubmit)="apiCall()" #searchForm="ngForm">
+      <div >
+        <label for="ville">Ville souhaitée</label>
+        <input type="text" class="form-control" id="ville" name="ville" [(ngModel)]="city" />
+      </div>
+      <button type="submit" class="btn btn-primary mt-2">Rechercher</button>
+    </form>
+  </div>
 
-<!-- predict-form.component.html -->
-<div class="center">
-  <form (ngSubmit)="onSubmit()"  #predictForm="ngForm">
-    <div >
-      <label for="distance_from_home">Vitesse du vent</label>
-      <input type="number" class="form-control" id="distance_from_home" name="distance_from_home" [(ngModel)]="data.vitesse_vent" required>
-    </div>
-    <div class="form-group">
-      <label for="distance_from_last_transaction">temperature ambiant </label>
-      <input type="number" class="form-control" id="distance_from_last_transaction" name="distance_from_last_transaction" [(ngModel)]="data.temperature_abiant" required>
-    </div>
-    <div class="form-group">
-      <label for="ratio_to_median_purchase_price">temperature cable</label>
-      <input type="number" class="form-control" id="ratio_to_median_purchase_price" name="ratio_to_median_purchase_price" [(ngModel)]="data.temparature_cable" required>
-    </div>
-    <div class="form-group">
-      <label for="repeat_retailer">intensité</label>
-      <input type="number" class="form-control" id="repeat_retailer" name="repeat_retailer" [(ngModel)]="data.intesite" required>
-    </div>
-    <button type="submit" class="btn btn-primary">Valider</button>
-  </form>
-  
-  <div> 
-    <button>Consomation de L'api</button>
+  <!-- Formulaire de prédiction -->
+  <div >
+    <form (ngSubmit)="onSubmit()" #predictForm="ngForm"  >
+      <div >
+        <label for="ws">Vitesse du vent</label>
+        <input type="text" class="form-control" id="ws" name="ws" [(ngModel)]="capteur.wind_speed" readonly />
+      </div>
+      <div >
+        <label for="ta">Température ambiante</label>
+        <input type="text" class="form-control" id="ta" name="ta" [(ngModel)]="capteur.ambient_temp" readonly />
+      </div>
+      <div >
+        <label for="tc">Température du câble</label>
+        <input type="number" class="form-control" id="tc" name="tc" [(ngModel)]="capteur.cable_temp" required />
+      </div>
+      <div>
+        <label for="i">Intensité</label>
+        <input type="number" class="form-control" id="i" name="i" [(ngModel)]="capteur.intensity" required />
+      </div>
+      <button type="submit" class="btn btn-primary mt-2">Valider</button>
+    </form>
   </div>
 </div>
 
-</body>
-</html>
+<div id="chartContainer" style="height: 360px; width: 100%;"></div>
+<div  *ngIf="response.energy !== undefined">
+  Avec cette recherche, vous avez une consommation de {{  response.energy.toPrecision(5) }} CO2.
+</div>
