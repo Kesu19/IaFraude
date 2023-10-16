@@ -13,14 +13,14 @@ interface Predict {
 export class FraudeController {
   constructor() {}
 
-  async getTemperature(request: Request, response: Response, next: NextFunction) {
-    const predict: Predict = request.body
+	async getTemperature(request: Request, response: Response, next: NextFunction) {
+		console.log(request.body)
+		const predict : Predict = request.body
+		axios.post("http://127.0.0.1:8000/temperature/",predict)
+			.then(data => {
+				response.json (data.data)
+			})
+			.catch(err => next(err));
 
-    try {
-      const fastAPIResponse = await axios.post('http://127.0.0.1:8000/temperature/', predict);
-      response.json(fastAPIResponse.data);
-    } catch (error) {
-      next(error);
-    }
-  }
+	}
 }

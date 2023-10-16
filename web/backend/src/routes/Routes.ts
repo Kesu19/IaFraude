@@ -15,7 +15,7 @@ export class Routes {
       });
     });
 
-    app.route('/fraudes').get((request: Request, response: Response, next: NextFunction) => {
+    app.route('/fraudes').post((request: Request, response: Response, next: NextFunction) => {
       this.FraudeController.getTemperature(request, response, next);
     });
   }

@@ -19,7 +19,6 @@ export class AppComponent implements OnInit {
   };
 
   response: any = {};
-  city = '';
   dataPoints: any[] = [];
 
   chart: any;
@@ -72,15 +71,6 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     // Initialize the chart
     this.chart = new CanvasJS.Chart('chartContainer', this.chartOptions);
-  }
-
-  apiCall() {
-    const weather = `https://api.openweathermap.org/data/2.5/weather?q=${this.city}&units=metric&appid=3cf54aa3315ab17be061f59b12cd8ca4`;
-
-    axios.get(weather).then((response) => {
-      this.capteur.wind_speed = response.data.wind.speed;
-      this.capteur.ambient_temp = response.data.main.temp;
-    });
   }
 
   onSubmit() {

@@ -6,36 +6,37 @@ from numba import jit
 app = FastAPI()
 
 @jit(nopython=True)
-def calculate_temperature(Tc, t, I, Ta, ws, delta=30):
-    return (-(ws**2 / 1600) * 0.4 - 0.1) * (Tc - Ta - (I**1.4 / 1.473785) * 130) * (delta / 60 / 1000)
-
+def temp(ws, ta, tc, i, delta=30):
+    tc = ((-ws**2/1600) * 0.4-0.1) * (tc - ta - (i**1.4/73785) * 130) * (delta/60/1000) + tc
+    return tc
+ 
 @jit(nopython=True)
-def calculate_temperature_wrapper(time, ws, ta, tc, i, delta):
-    x_values = []
-    y_values = []
-    time_in_milliseconds = time * 1000
-    for n in range(0, time_in_milliseconds + delta, delta):
-        x_values.append(n / 1000)
-        y_values.append(tc)
-        tc = calculate_temperature(tc, ta, i, ta, ws, delta)
-    return x_values, y_values
+def temp_wrapper(time, ws, ta, tc, i, delta):
+    x = []
+    y = []
+    time = time*1000
+    for n in range(0, time+delta, delta):
+        x.append(n/1000)
+        y.append(tc)
+        tc = temp(ws, ta, tc, i, delta)
+    return x, y
 
-class TemperatureInput(BaseModel):
+class InputData(BaseModel):
     wind_speed: float
     intensity: float
-    ambient_temperature: float
-    cable_temperature: float
+    ambient_temp: float
+    cable_temp: float
     time: int
     delta: int
 
-@app.post("/calculate_temperature/")
-def calculate_temperature_estimate(data: TemperatureInput):
+@app.post("/temperature/")
+def estimate(data: InputData):
 
-    emissions_tracker = EmissionsTracker()
-    emissions_tracker.start()
+    tracker = EmissionsTracker()
+    tracker.start()
 
-    x_values, y_values = calculate_temperature_wrapper(data.time, data.wind_speed, data.ambient_temperature, data.cable_temperature, data.intensity, data.delta)
+    resx, resy = temp_wrapper(data.time, data.wind_speed, data.ambient_temp, data.cable_temp, data.intensity, data.delta)
 
-    emissions = emissions_tracker.stop()
+    emissions: float = tracker.stop()
 
-    return {"estimation": y_values[-1], "energy": emissions}
+    return {"estimation": resy[-1], "energy": emissions}
